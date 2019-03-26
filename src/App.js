@@ -45,40 +45,40 @@ class Header extends Component {
 
 class App extends Component {
 
-	state = this.getCurrentStateFromStore()
+    state = this.getCurrentStateFromStore()
   
-	getCurrentStateFromStore() {
+    getCurrentStateFromStore() {
         var state = store.getState()
         return {
             route: state.route,
             appStage: state.appStage
         }
-	}
-	
-	updateStateFromStore = () => {
+    }
+    
+    updateStateFromStore = () => {
         const currentState = this.getCurrentStateFromStore();
         this.setState(currentState);
-	}
-	
-	componentDidMount() {
+    }
+    
+    componentDidMount() {
         this.unsubscribeStore = store.subscribe(this.updateStateFromStore);
-	}
-	
-	componentWillUnmount() {
+    }
+    
+    componentWillUnmount() {
         this.unsubscribeStore();
-	}
-	
-	render() {
+    }
+    
+    render() {
 
         const { route, appStage } = this.state;
 
-		return <>{(() => {
+        return <>{(() => {
             switch(appStage) {
                 case APPSTAGE_INITIAL:    return <Initial />
                 default:                  return <></>
               }
         })()}</>
-	}
+    } 
 }
 
 export default App;
