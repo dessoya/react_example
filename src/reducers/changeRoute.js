@@ -6,8 +6,10 @@ var changeRoute = (route) => {
     history.push(route)
 }
 
-function changeRouteReducer(state = null, action) {
-	
+function changeRouteReducer(state = history.location.pathname, action) {
+    
+    // if(state === undefined) return history.location.pathname
+
 	switch (action.type) {
 		case SETUP_ROUTE:
 			changeRoute(action.route)

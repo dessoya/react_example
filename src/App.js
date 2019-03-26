@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import './App.css';
 
@@ -5,8 +6,10 @@ import { Switch, Route } from 'react-router-dom'
 
 import { changeRoute } from './helpers'
 import { store } from './store'
+import { APPSTAGE_INITIAL } from './constants'
+import Initial from './components/Initial'
 
-
+/*
 const Home = () => (
   <div>
     <h1>Welcome to the Tornadoes Website!</h1>
@@ -38,42 +41,43 @@ class Header extends Component {
     }
 }
 
+*/
+
 class App extends Component {
 
 	state = this.getCurrentStateFromStore()
   
 	getCurrentStateFromStore() {
-	  return {
-		route: store.getState().route,
-	  }
+        var state = store.getState()
+        return {
+            route: state.route,
+            appStage: state.appStage
+        }
 	}
 	
 	updateStateFromStore = () => {
-	  const currentState = this.getCurrentStateFromStore();
-	  
-	  if (this.state !== currentState) {
-		this.setState(currentState);
-	  }
+        const currentState = this.getCurrentStateFromStore();
+        this.setState(currentState);
 	}
 	
 	componentDidMount() {
-	  this.unsubscribeStore = store.subscribe(this.updateStateFromStore);
+        this.unsubscribeStore = store.subscribe(this.updateStateFromStore);
 	}
 	
 	componentWillUnmount() {
-	  this.unsubscribeStore();
+        this.unsubscribeStore();
 	}
 	
 	render() {
 
-		const { route } = this.state;
-		return (
-		<>
-			<div>{route}</div>
-			<Header />
-			<Main />
-		</>
-		);
+        const { route, appStage } = this.state;
+
+		return <>{(() => {
+            switch(appStage) {
+                case APPSTAGE_INITIAL:    return <Initial />
+                default:                  return <></>
+              }
+        })()}</>
 	}
 }
 

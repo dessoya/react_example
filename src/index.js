@@ -14,6 +14,7 @@ import { store } from './store'
 import history from './history.js';
 import { changeRoute } from './helpers'
 
+// detect route at start
 class LocationListener extends Component {
   
 	componentDidMount() {
@@ -21,18 +22,17 @@ class LocationListener extends Component {
 	}
     
 	render() {
-	  return this.props.children;
+	    return this.props.children;
 	}
-  }   
+}
 
 
 ReactDOM.render((
 	<Provider store={store}>
-    <HashRouter>
-	<LocationListener>
-      <App />
-	</LocationListener>
-    </HashRouter>
+		<HashRouter>
+			<LocationListener>
+				<App />
+			</LocationListener>
+		</HashRouter>
 	</Provider>
-  ), document.getElementById('root'))
-
+), document.getElementById('root'))
