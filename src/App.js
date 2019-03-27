@@ -6,8 +6,10 @@ import { Switch, Route } from 'react-router-dom'
 
 import { changeRoute } from './helpers'
 import { store } from './store'
-import { APPSTAGE_INITIAL } from './constants'
+import { APPSTAGE_INITIAL, APPSTAGE_SIGNIN } from './constants'
+
 import Initial from './components/Initial'
+import SignIn from './components/SignIn'
 
 /*
 const Home = () => (
@@ -48,7 +50,8 @@ class App extends Component {
     state = this.getCurrentStateFromStore()
   
     getCurrentStateFromStore() {
-        var state = store.getState()
+		var state = store.getState()
+		console.log('app store', state)
         return {
             // route: state.route,
             appStage: state.appStage
@@ -76,8 +79,9 @@ class App extends Component {
 
         return <>{(() => {
             switch(appStage) {
-                case APPSTAGE_INITIAL:    return <Initial />
-                default:                  return <></>
+                case APPSTAGE_INITIAL:		return <Initial />
+				case APPSTAGE_SIGNIN:		return <SignIn />
+                default:                  	return <></>
               }
         })()}</>
     } 

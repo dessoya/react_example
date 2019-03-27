@@ -1,4 +1,6 @@
 
 const SETUP_ROUTE = 'setup_route'
+const APP_STAGE = 'APP_STAGE'
+const SIGNIN_MODE = 'SIGNIN_MODE'
 
-export { SETUP_ROUTE }
+export { SETUP_ROUTE, APP_STAGE, SIGNIN_MODE }

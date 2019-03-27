@@ -9,7 +9,8 @@
     "react-router-dom": "*",
     "redux": "*",
     "react-redux": "*",
-    "axios": "*"
+    "axios": "*",
+    "redux-thunk": "*"
   },
   "scripts": {
     "start": "react-scripts start",
