@@ -50,7 +50,7 @@ class App extends Component {
     getCurrentStateFromStore() {
         var state = store.getState()
         return {
-            route: state.route,
+            // route: state.route,
             appStage: state.appStage
         }
     }
@@ -70,7 +70,9 @@ class App extends Component {
     
     render() {
 
-        const { route, appStage } = this.state;
+        const { 
+            // route, 
+            appStage } = this.state;
 
         return <>{(() => {
             switch(appStage) {

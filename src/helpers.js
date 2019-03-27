@@ -9,4 +9,8 @@ var changeRoute = (route) => {
 	}
 }
 
-export { changeRoute }
+var sleep = ms => new Promise((resolve, reject) => {
+	setTimeout(() => { resolve() }, ms)
+})
+
+export { changeRoute, sleep }
