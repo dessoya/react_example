@@ -5,10 +5,11 @@
   "dependencies": {
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
+    "react-scripts": "2.1.8",
     "react-router-dom": "*",
     "redux": "*",
     "react-redux": "*",
-    "react-scripts": "2.1.8"
+    "axios": "*"
   },
   "scripts": {
     "start": "react-scripts start",
