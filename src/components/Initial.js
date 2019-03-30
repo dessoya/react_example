@@ -12,7 +12,6 @@ class Initial extends Component {
     async componentDidMount() {
         await sleep(500)
 		var response = await api.authInfo()
-		// console.log(response)
 		if(response.ok) {
 			if(response.data.auth) {
 				store.dispatch({type: APP_STAGE, stage: APPSTAGE_AUTH })

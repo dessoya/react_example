@@ -6,7 +6,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import { changeRoute } from './helpers'
 import { store } from './store'
-import { APPSTAGE_INITIAL, APPSTAGE_SIGNIN } from './constants'
+import { APPSTAGE_AUTH, APPSTAGE_INITIAL, APPSTAGE_SIGNIN } from './constants'
 
 import Initial from './components/Initial'
 import SignIn from './components/SignIn'
@@ -81,6 +81,7 @@ class App extends Component {
             switch(appStage) {
                 case APPSTAGE_INITIAL:		return <Initial />
 				case APPSTAGE_SIGNIN:		return <SignIn />
+				case APPSTAGE_AUTH:			return <></>
                 default:                  	return <></>
               }
         })()}</>

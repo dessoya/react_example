@@ -56,6 +56,11 @@
 	margin-bottom: 5px;
 }
 
-.link {
+.link,
+.form-name {
 	padding: 5px 15px;
+}
+
+.line.controls {
+	margin-top: 15px;
 }
