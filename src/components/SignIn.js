@@ -1,8 +1,8 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 import { store } from './../store'
 import { MODE_SIGNIN, MODE_REGISTER, APPSTAGE_INITIAL, APPSTAGE_INITFAIL } from './../constants'
-import { SIGNIN_MODE, REGISTER_FORM_SET_ERROR, APP_STAGE } from './../actions'
+import { SIGNIN_MODE, REGISTER_FORM_SET_ERROR, APP_STAGE, SIGNIN_FORM_SET_ERROR } from './../actions'
 import './SignIn.css';
 import { ComponentWithStoreTracking } from './../helpers'
 import api from './../services/api'
@@ -16,14 +16,60 @@ class SigninForm extends ComponentWithStoreTracking {
 
 	getCurrentStateFromStore(state) {
         return {
+            error: state.signinForm.error
         }
 	}
 		
+    componentDidMount() {
+        super.componentDidMount()
+        store.dispatch({type:SIGNIN_FORM_SET_ERROR,error:''})
+    }
+
 	onClickRegister() {
 		store.dispatch({type: SIGNIN_MODE, mode: MODE_REGISTER })
 	}
 
+	handleChange = (event) => {
+		this.setState({ [event.target.name]: event.target.value})
+	}	
+
+    onSigninAsync = async () => {
+
+		var response = await api.auth(this.state.login, this.state.password)
+
+		store.dispatch({type:SIGNIN_FORM_SET_ERROR,error:''})
+
+		if(!response.ok) {
+			store.dispatch({type: APP_STAGE, stage: APPSTAGE_INITFAIL })
+			return
+		}
+
+		var answer = response.data
+		if(answer.ok) {
+			store.dispatch({type: APP_STAGE, stage: APPSTAGE_INITIAL })
+		}
+		else {
+
+			store.dispatch({type:SIGNIN_FORM_SET_ERROR,error: 'Login or password incorrect'})
+            
+            /*
+			var e = [ ]
+			for(var name in answer.errors) {
+				if(name === '_errorCount') continue
+				if(answer.errors[name].length)
+					e.push(`${name}: ${answer.errors[name].join(', ')}`)
+			}
+			store.dispatch({type:SIGNIN_FORM_SET_ERROR,error: e.join('<br>')})
+            */
+
+		}
+    }
+
 	render() {
+        
+        const { 
+			error } = this.state;
+
 		return (
 			<div className="signin-form">
 
@@ -32,20 +78,20 @@ class SigninForm extends ComponentWithStoreTracking {
 					<div className="link ffr" onClick={this.onClickRegister}>Register</div>
 				</div>
 
-				<div className="line error"></div>
+				<div className="line error">{error}</div>
 
 				<div className="line">
 					<div className="caption">Login</div>
-					<div><input autoFocus /></div>
+					<div><input autoFocus name="login" onChange={this.handleChange} /></div>
 				</div>
 
 				<div className="line">
 				<div className="caption">Password</div>
-					<div><input type="password" /></div>
+					<div><input type="password" name="password" onChange={this.handleChange} /></div>
 				</div>
 
 				<div className="line controls">
-					<button className="ffr">Sign in</button>
+					<button onClick={this.onSigninAsync} className="ffr">Sign in</button>
 				</div>
 
 			</div>
@@ -55,22 +101,19 @@ class SigninForm extends ComponentWithStoreTracking {
 
 class RegisterForm extends ComponentWithStoreTracking {
 
-	constructor(...args) {
-		super(...args)
-		store.dispatch({type:REGISTER_FORM_SET_ERROR,error:''})
-	}
-
 	getCurrentStateFromStore(state) {
         return {
 			error: state.registerForm.error
         }
     }
 
-	onRegister = () => {
-		this.onRegisterAsync()
-	}
+    componentDidMount() {
+        super.componentDidMount()
+        store.dispatch({type:REGISTER_FORM_SET_ERROR,error:''})
+    }
 
-	async onRegisterAsync() {
+
+	onRegisterAsync = async () => {
 
 		if(this.state.password !== this.state.confirm) {
 			store.dispatch({type:REGISTER_FORM_SET_ERROR,error:'Password pair must be equal'})
@@ -149,7 +192,7 @@ class RegisterForm extends ComponentWithStoreTracking {
 				</div>
 
 				<div className="line controls">
-					<button onClick={this.onRegister} className="ffr">Register</button>
+					<button onClick={this.onRegisterAsync} className="ffr">Register</button>
 				</div>
 
 			</div>
@@ -159,15 +202,15 @@ class RegisterForm extends ComponentWithStoreTracking {
 
 class SignIn extends ComponentWithStoreTracking {
 
-	constructor(...args) {
-		super(...args)
-		store.dispatch({type: SIGNIN_MODE, mode: MODE_SIGNIN })
-	}
-
 	getCurrentStateFromStore(state) {
         return {
             signinMode: state.signinMode
         }
+    }
+
+    componentDidMount() {
+        super.componentDidMount()
+        store.dispatch({type: SIGNIN_MODE, mode: MODE_SIGNIN })
     }
 
 	render() {

@@ -1,22 +1,24 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 
 import { Switch, Route } from 'react-router-dom'
 
-import { changeRoute } from './helpers'
-import { store } from './store'
+import { ComponentWithStoreTracking } from './helpers'
+// import { store } from './store'
 import { APPSTAGE_AUTH, APPSTAGE_INITIAL, APPSTAGE_SIGNIN } from './constants'
 
 import Initial from './components/Initial'
 import SignIn from './components/SignIn'
+import TopMenu from './components/TopMenu'
 
-/*
 const Home = () => (
   <div>
     <h1>Welcome to the Tornadoes Website!</h1>
   </div>
 )
+
+/*
 
 const Main = () => (
   <main>
@@ -45,32 +47,16 @@ class Header extends Component {
 
 */
 
-class App extends Component {
+class App extends ComponentWithStoreTracking {
 
-    state = this.getCurrentStateFromStore()
-  
-    getCurrentStateFromStore() {
-		var state = store.getState()
+    getCurrentStateFromStore(state) {
 		console.log('app store', state)
         return {
             // route: state.route,
             appStage: state.appStage
         }
     }
-    
-    updateStateFromStore = () => {
-        const currentState = this.getCurrentStateFromStore();
-        this.setState(currentState);
-    }
-    
-    componentDidMount() {
-        this.unsubscribeStore = store.subscribe(this.updateStateFromStore);
-    }
-    
-    componentWillUnmount() {
-        this.unsubscribeStore();
-    }
-    
+        
     render() {
 
         const { 
@@ -81,7 +67,12 @@ class App extends Component {
             switch(appStage) {
                 case APPSTAGE_INITIAL:		return <Initial />
 				case APPSTAGE_SIGNIN:		return <SignIn />
-				case APPSTAGE_AUTH:			return <></>
+				case APPSTAGE_AUTH:			return (<>
+                    <TopMenu />
+                    <Switch>
+                        <Route exact path='/' component={Home}/>
+                    </Switch>
+                </>)
                 default:                  	return <></>
               }
         })()}</>

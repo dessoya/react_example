@@ -32,6 +32,16 @@ class API {
 		var answer = await this.post('user/register', { email, login, password })
 		return answer
 	}
+
+	async auth(login, password) {
+		var answer = await this.post('user/auth', { login, password })
+		return answer
+	}
+
+	async logout() {
+		var answer = await this.get('user/logout')
+		return answer
+	}
 }
 
 var api = new API()
